@@ -9,6 +9,15 @@ module.exports = {
       latitude,
       longitude
     } = req.body;
+
+    const devExist = await Dev.findOne({
+      github_username
+    });
+
+    if (devExist) {
+      return res.json(devExist);
+    }
+
     const githubResponse = axios.get(`https://api.github.com/users/${github_username}`);
 
     const {
@@ -30,7 +39,6 @@ module.exports = {
       techs: techsArray,
       location
     })
-
     return res.json(dev);
   }
 }
